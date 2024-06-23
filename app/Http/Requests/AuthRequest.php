@@ -25,6 +25,7 @@ class AuthRequest extends BaseRequest
         return [
             'email' => 'required|string|email',
             'password' => 'required|string',
+            'role' => 'required|integer',
         ];
     }
 
@@ -36,6 +37,8 @@ class AuthRequest extends BaseRequest
             'email.email' => 'メールアドレスを正しい形式で入力してください。',
             'password.required' => 'パスワードは必須です。',
             'password.string' => 'パスワードを正しい形式で入力してください。',
+            'role.required' => 'roleは必須です。',
+            'role.integer' => 'roleを正しい形式で入力してください。',
         ];
     }
 }

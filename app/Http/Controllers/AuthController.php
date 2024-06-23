@@ -14,6 +14,12 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
+
+        // ロールのチェック
+        if ($user->role !== $request->role) {
+            return response()->json(['message' => 'メールアドレスまたはパスワードが違います。'], 403);
+        }
+
         $token = $user->createToken('token-name')->plainTextToken;
 
         return response()->json(['token' => $token, 'user' => $user]);
