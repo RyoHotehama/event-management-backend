@@ -27,4 +27,22 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    /**
+     * レンダリングのためのカスタム例外処理
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Throwable  $exception
+     * @return \Illuminate\Http\Response
+     */
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof CustomException) {
+            return response()->json([
+                'error' => $exception->getMessage()
+            ], $exception->getStatusCode());
+        }
+
+        return parent::render($request, $exception);
+    }
 }
