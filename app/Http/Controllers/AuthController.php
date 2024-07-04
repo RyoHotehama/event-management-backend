@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -23,5 +24,10 @@ class AuthController extends Controller
         $token = $user->createToken('token-name')->plainTextToken;
 
         return response()->json(['token' => $token, 'user' => $user]);
+    }
+
+    public function check(Request $request)
+    {
+        return $request->user();
     }
 }
