@@ -2,22 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Consts\Common;
 use App\Exceptions\CustomException;
+use App\Http\Requests\ProfileListRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Services\PasswordService;
 use App\Services\ProfileService;
+use App\Services\UserService;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\JsonResponse;
 
 class ProfileController extends Controller
 {
     private $passwordService;
+    private $userService;
     private $profileService;
 
-    public function __construct(PasswordService $passwordService, ProfileService $profileService)
+    public function __construct(PasswordService $passwordService, UserService $userService, ProfileService $profileService)
     {
         $this->passwordService = $passwordService;
+        $this->userService = $userService;
         $this->profileService = $profileService;
     }
 
@@ -25,7 +31,7 @@ class ProfileController extends Controller
      * ユーザー登録
      *
      * @param ProfileRequest $request
-     * @return
+     * @return JsonResponse
      */
     public function create(ProfileRequest $request)
     {
@@ -46,10 +52,11 @@ class ProfileController extends Controller
             'first_name' => $request->firstName,
         ];
 
-        DB::beginTransaction();
         try {
+            DB::beginTransaction();
+
             // ユーザー登録
-            $userId = $this->profileService->createUser($userData);
+            $userId = $this->userService->createUser($userData);
 
             $profileData['user_id'] = $userId;
 
@@ -67,5 +74,26 @@ class ProfileController extends Controller
         }
 
         return response()->json(['userId' => $userId]);
+    }
+
+    /**
+     * ユーザー一覧取得
+     *
+     * @param ProfileListRequest $request
+     * @return JsonResponse
+     */
+    public function list(ProfileListRequest $request)
+    {
+        $page = $request->page;
+        $search = $request->search;
+        $role = $request->role;
+
+        if (!$page) {
+            $page = Common::DEFAULT_PAGE;
+        }
+
+        $profileList = $this->profileService->getProfileList($page, $search, $role);
+
+        return response()->json(['profileList' => $profileList]);
     }
 }

@@ -24,5 +24,6 @@ Route::middleware(['auth:sanctum', 'role:1'])->group(function () {
 
     Route::prefix('user')->group(function () {
         Route::post('/create', [ProfileController::class, 'create']);
+        Route::get('/list', [ProfileController::class, 'list']);
     });
 });
