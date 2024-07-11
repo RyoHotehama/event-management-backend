@@ -23,13 +23,17 @@ class ProfileListRequest extends BaseRequest
     {
         return [
             'page' => 'nullable|integer',
+            'search' => 'nullable|string',
+            'role' => 'nullable|integer'
         ];
     }
 
     public function messages(): array
     {
         return [
-            'page.number' => 'pageを正しい形式で入力してください。',
+            'page.integer' => 'pageを正しい形式で入力してください。',
+            'search.number' => 'searchを正しい形式で入力してください。',
+            'role.integer' => 'roleを正しい形式で入力してください。',
         ];
     }
 }

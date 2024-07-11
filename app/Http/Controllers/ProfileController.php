@@ -85,11 +85,14 @@ class ProfileController extends Controller
     public function list(ProfileListRequest $request)
     {
         $page = $request->page;
+        $search = $request->search;
+        $role = $request->role;
+
         if (!$page) {
             $page = Common::DEFAULT_PAGE;
         }
 
-        $profileList = $this->profileService->getProfileList($page);
+        $profileList = $this->profileService->getProfileList($page, $search, $role);
 
         return response()->json(['profileList' => $profileList]);
     }
