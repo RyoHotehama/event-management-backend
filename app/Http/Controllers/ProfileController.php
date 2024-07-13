@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Consts\Common;
 use App\Exceptions\CustomException;
+use App\Http\Requests\ProfileDetailRequest;
 use App\Http\Requests\ProfileListRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Services\PasswordService;
@@ -95,5 +96,19 @@ class ProfileController extends Controller
         $profileList = $this->profileService->getProfileList($page, $search, $role);
 
         return response()->json(['profileList' => $profileList]);
+    }
+
+    /**
+     * ユーザー詳細取得
+     *
+     * @param ProfileDetailRequest $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function detail(ProfileDetailRequest $request, $id)
+    {
+        $profileDetail = $this->profileService->getProfileDetail($id);
+
+        return response()->json(['profileDetail' => $profileDetail]);
     }
 }
