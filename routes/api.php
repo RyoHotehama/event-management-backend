@@ -26,5 +26,6 @@ Route::middleware(['auth:sanctum', 'role:1'])->group(function () {
         Route::post('/create', [ProfileController::class, 'create']);
         Route::get('/list', [ProfileController::class, 'list']);
         Route::get('/detail/{id}', [ProfileController::class, 'detail']);
+        Route::post('/edit/{id}', [ProfileController::class, 'edit']);
     });
 });

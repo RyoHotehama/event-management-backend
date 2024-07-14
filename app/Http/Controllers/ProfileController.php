@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Consts\Common;
 use App\Exceptions\CustomException;
 use App\Http\Requests\ProfileDetailRequest;
+use App\Http\Requests\ProfileEditRequest;
 use App\Http\Requests\ProfileListRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Services\PasswordService;
@@ -110,5 +111,27 @@ class ProfileController extends Controller
         $profileDetail = $this->profileService->getProfileDetail($id);
 
         return response()->json(['profileDetail' => $profileDetail]);
+    }
+
+    /**
+     * ユーザー更新
+     *
+     * @param ProfileEditRequest $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function edit(ProfileEditRequest $request, $id)
+    {
+        $updateData = [
+            'email' => $request->email,
+            'role' => $request->role,
+            'last_name' => $request->lastName,
+            'first_name' => $request->firstName,
+        ];
+
+        // ユーザー情報更新
+        $this->profileService->updateProfile($updateData, $id);
+
+        return response()->json();
     }
 }

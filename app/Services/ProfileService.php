@@ -63,4 +63,18 @@ class ProfileService
         ->where('profiles.id', '=', $id)
         ->first();
     }
+
+    /**
+     * プロフィール情報更新
+     *
+     * @param array $updateData
+     * @param int $id
+     * @return void
+     */
+    public function updateProfile($updateData, $id)
+    {
+        Profile::join('users', 'users.id', '=', 'profiles.user_id')
+        ->where('profiles.id', '=', $id)
+        ->update($updateData);
+    }
 }
