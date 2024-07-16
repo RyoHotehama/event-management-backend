@@ -47,7 +47,7 @@ class ProfileService
             $query->where('role', $role);
         }
 
-        return $query->paginate($perPage, ['*'], 'page', $page)->toArray();
+        return $query->where('delete_flg', '=', Common::DELETE_IS_NOT_FLG)->paginate($perPage, ['*'], 'page', $page)->toArray();
     }
 
     /**
@@ -61,6 +61,7 @@ class ProfileService
         return Profile::selectRaw("profiles.id, email, last_name, first_name, role, DATE_FORMAT(profiles.created_at, '%Y/%m/%d') as create_date")
         ->join('users', 'users.id', '=', 'profiles.user_id')
         ->where('profiles.id', '=', $id)
+        ->where('delete_flg', '=', Common::DELETE_IS_NOT_FLG)
         ->first();
     }
 
@@ -76,5 +77,18 @@ class ProfileService
         Profile::join('users', 'users.id', '=', 'profiles.user_id')
         ->where('profiles.id', '=', $id)
         ->update($updateData);
+    }
+
+    /**
+     * ユーザー情報削除
+     *
+     * @param int $id
+     * @return void
+     */
+    public function deleteProfile($id)
+    {
+        Profile::join('users', 'users.id', '=', 'profiles.user_id')
+        ->where('profiles.id', '=', $id)
+        ->update(['delete_flg' => Common::DELETE_FLG]);
     }
 }

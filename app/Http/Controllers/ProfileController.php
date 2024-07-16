@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Consts\Common;
 use App\Exceptions\CustomException;
+use App\Http\Requests\ProfileDeleteRequest;
 use App\Http\Requests\ProfileDetailRequest;
 use App\Http\Requests\ProfileEditRequest;
 use App\Http\Requests\ProfileListRequest;
@@ -131,6 +132,20 @@ class ProfileController extends Controller
 
         // ユーザー情報更新
         $this->profileService->updateProfile($updateData, $id);
+
+        return response()->json();
+    }
+
+    /**
+     * ユーザー削除
+     *
+     * @param ProfileDeleteRequest $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function delete(ProfileDeleteRequest $request, $id)
+    {
+        $this->profileService->deleteProfile($id);
 
         return response()->json();
     }
